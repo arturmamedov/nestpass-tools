@@ -112,8 +112,11 @@ npm run fonts     # after bumping an @fontsource version: re-copy web/fonts/
   (Flyers: the Basic-auth rule in its `docs/deploy.md`).
 
 **Upload:**
-1. Copy the **contents** of `web/` into the domain root: `index.html`, `hub.css`, `hub.js`, `kit/`,
-   `fonts/`.
+1. Copy the **contents** of `web/` into the domain root: `index.html`, `hub.css`, `hub.js`,
+   `robots.txt`, `kit/`, `fonts/`.
+   - `robots.txt` asks every crawler, search and AI alike, to stay off the whole of nestpass.ai.
+     That includes `/activities/`, `/newsletter/` and `/vanity/`: crawlers read robots.txt only at
+     a domain's root.
 2. **Never add a `.htaccess` to the domain root.** Its `Header`/`Options`/rewrite lines would apply
    to `/activities/` and `/newsletter/` too. Only `kit/.htaccess` belongs here.
 3. **Never put `kit/` behind a password.** The QR tool, on another origin, can't load it through one.
@@ -122,6 +125,7 @@ npm run fonts     # after bumping an @fontsource version: re-copy web/fonts/
 
 ```sh
 curl -I https://nestpass.ai/                  # 200
+curl https://nestpass.ai/robots.txt           # User-agent: * / Disallow: /
 curl -I https://nestpass.ai/kit/nest-nav.js   # 200, JavaScript, Cache-Control: max-age=300, stale-while-revalidate=86400
 curl -I https://nestpass.ai/activities/       # unchanged: the same headers as before the upload
 ```
@@ -137,3 +141,9 @@ Then open each tool and follow the bar's links from one to another.
   signed-in session.
   - Pinning it with Subresource Integrity would undo "one upload updates all", so it isn't pinned.
   - What protects it is the IONOS SFTP account: keep those credentials to the owner.
+- **`robots.txt` turns every crawler away, and the pages still say noindex.**
+  - Staying unread wins over the one thing a Disallow costs: a crawler that obeys it never sees the
+    noindex. A search engine may then list a bare address it found linked elsewhere, with no
+    content.
+  - robots.txt is a request, not a lock. Crawlers that ignore it are stopped only by each tool's
+    own login.

@@ -24,6 +24,26 @@ test('the hub is public but asks search engines to stay away', async ({ page }) 
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
 });
 
+test('robots.txt turns every crawler away from the whole domain, AI crawlers by name too', async ({ page }) => {
+  // Through the page, not page.request: only the page's requests go through the fixture's routes.
+  const res = (await page.goto(`${HUB}robots.txt`))!;
+  expect(res.status()).toBe(200);
+  expect(res.headers()['content-type']).toMatch(/^text\/plain/);
+  // Groups: consecutive User-agent lines, then their rules. Every group must disallow everything.
+  const groups: { agents: string[]; rules: string[] }[] = [];
+  for (const line of (await res.text()).split(/\r?\n/).map((l) => l.replace(/#.*/, '').trim()).filter(Boolean)) {
+    const [field, value] = line.split(/:\s*/, 2);
+    if (/^user-agent$/i.test(field)) {
+      const last = groups.at(-1);
+      if (last && last.rules.length === 0) last.agents.push(value);
+      else groups.push({ agents: [value], rules: [] });
+    } else groups.at(-1)!.rules.push(`${field.toLowerCase()}:${value}`);
+  }
+  for (const group of groups) expect(group.rules, group.agents.join(', ')).toEqual(['disallow:/']);
+  const agents = groups.flatMap((g) => g.agents);
+  for (const name of ['*', 'GPTBot', 'ClaudeBot', 'CCBot', 'Google-Extended', 'PerplexityBot']) expect(agents).toContain(name);
+});
+
 test('the hub renders in its own fonts, with no third-party requests', async ({ page, context }) => {
   const outside: string[] = [];
   context.on('request', (r) => !r.url().startsWith(HUB) && outside.push(r.url()));

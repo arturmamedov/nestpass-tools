@@ -41,7 +41,12 @@ npm run fonts   # re-copy web/fonts/ from the pinned @fontsource packages
 - `tool` stays an observed attribute. Never add a getter-only `tool` property: React assigns to it.
 - **Colour:** bright teal `#53CED1` is never text on cream; text teal is `#0D6F82`. No orange: the
   website reserves it for Book Now.
-- **The page stays noindex, with no `robots.txt`** (a Disallow would hide the noindex).
+- **`web/robots.txt` turns away every crawler, AI ones by name** (the owner's call, 2026-09-28: nothing
+  here is for search engines or LLMs).
+  - It is the only one that counts on nestpass.ai, so it covers `/activities/`, `/newsletter/` and
+    `/vanity/` too.
+  - The page stays noindex as a second layer.
+  - The same file ships with Flyers, Newsletter and QR; keep the copies identical.
 - **No `.htaccess` at the root of `web/`.**
 
 ## Working here
