@@ -1,0 +1,6 @@
+# Only this folder: a Header at the domain root would also reach /activities/ and /newsletter/.
+# Five minutes, then revalidate in the background: an edit to nest-nav.js reaches every tool
+# within about that, without a round trip on every page view.
+<IfModule mod_headers.c>
+    Header set Cache-Control "max-age=300, stale-while-revalidate=86400"
+</IfModule>

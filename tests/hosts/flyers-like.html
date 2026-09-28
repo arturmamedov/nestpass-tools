@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flyers-like host</title>
+<script async src="https://nestpass.ai/kit/nest-nav.js"></script>
+<style>
+/* The Flyers editor's generic names and variables, poisoned. */
+:root { --night: #f00; --teal: #f00; --teal-bright: #f00; --ink: #f00; }
+html, body { margin: 0; }
+body { font-family: 'Montserrat', system-ui, sans-serif; font-size: 14px; color: #141414; background: #f8f4e8; }
+.btn { display: inline-flex; padding: 8px 14px; border-radius: 999px; border: 1px solid #ddd6c4; background: #fff; font-size: 13px; }
+nest-nav:not(:defined) { display: flex; align-items: center; box-sizing: border-box; height: 54px; padding: 0 20px; background: #083344; }
+.below { position: relative; z-index: 5; height: 400px; background: #eee; }
+</style>
+</head>
+<body>
+<nest-nav tool="flyers"><a slot="fallback" class="brand" href="#">Flyers</a><nav class="own" aria-label="Tool"><a href="#library">Library</a> <a class="btn" href="#new">New</a></nav></nest-nav>
+<main><p class="text">Page content.</p><div class="below">Positioned content under the bar.</div></main>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Public by decision, but not for search engines. No robots.txt: a Disallow would hide this tag. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Nests tools</title>
+    <meta name="description" content="The tools the Nests Hostels team uses to make flyers, newsletters, QR codes and social links." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230D6F82'/><circle cx='50' cy='50' r='18' fill='%2353CED1'/></svg>" />
+    <link rel="preload" href="fonts/archivo-black-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="hub.css" />
+    <!-- defer keeps the order: the registry exists before hub.js draws the cards from it. -->
+    <script defer src="kit/nest-nav.js"></script>
+    <script defer src="hub.js"></script>
+  </head>
+  <body>
+    <nest-nav><span slot="fallback">Nests tools</span></nest-nav>
+    <main>
+      <section class="hero">
+        <div class="wrap">
+          <p class="eyebrow">Nests Hostels</p>
+          <h1>Staff tools</h1>
+          <p class="lede">Everything the team uses to make flyers, newsletter headers, QR codes and social links. Pick one to open it.</p>
+        </div>
+      </section>
+      <section class="tools" aria-label="Tools">
+        <ul class="wrap cards" id="tools"></ul>
+      </section>
+    </main>
+    <footer>
+      <a href="https://nestshostels.com/">nestshostels.com <span aria-hidden="true">↗</span></a>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR-like host</title>
+<script async src="https://nestpass.ai/kit/nest-nav.js"></script>
+<style>
+/* The QR tool's global reset and element rules, plus every inherited property turned up. */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+a { color: #f00; text-decoration: underline; }
+p, span, div, button, a, header, nav, ul, li { font-family: 'Comic Sans MS', cursive; }
+header, nav, ul, li, img, button { background: #f00; border: 3px solid #f00; height: 200px; display: grid; }
+body { font-size: 22px; line-height: 3; letter-spacing: 0.3em; word-spacing: 10px; text-transform: lowercase;
+  text-align: center; text-indent: 40px; font-style: italic; text-shadow: 0 0 2px #f00; white-space: pre; color: #f00; }
+.below { position: relative; z-index: 5; height: 400px; background: #eee; }
+</style>
+</head>
+<body>
+<nest-nav tool="flyers"><a slot="fallback" class="brand" href="#">Flyers</a><nav class="own" aria-label="Tool"><a href="#library">Library</a> <a class="btn" href="#new">New</a></nav></nest-nav>
+<main><p class="text">Page content.</p><div class="below">Positioned content under the bar.</div></main>
+</body>
+</html>
