@@ -1,0 +1,5 @@
+# LF everywhere, as in the Flyers repo: web/ is uploaded as it is, and tests/hub.spec.ts compares
+# web/fonts/ byte for byte with the @fontsource packages.
+* text=auto eol=lf
+*.png binary
+*.woff2 binary
