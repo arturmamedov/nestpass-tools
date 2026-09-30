@@ -7,7 +7,7 @@
          covers one that arrives anyway, through a link. -->
     <meta name="robots" content="noindex, nofollow" />
     <title>Nests tools</title>
-    <meta name="description" content="The tools the Nests Hostels team uses to make flyers, newsletters, QR codes and social links, and the way into Nests Analytics and the wSuite chatbot." />
+    <meta name="description" content="The tools the Nests Hostels team uses to make flyers, newsletters, QR codes and social links, the team's shared folders and dashboards, and the way into Nests Analytics and the wSuite chatbot." />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230D6F82'/><circle cx='50' cy='50' r='18' fill='%2353CED1'/></svg>" />
     <link rel="preload" href="fonts/archivo-black-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="hub.css" />
@@ -22,20 +22,27 @@
         <div class="wrap">
           <p class="eyebrow">Nests Hostels</p>
           <h1>Staff tools</h1>
-          <p class="lede">Everything the team uses to make flyers, newsletter headers, QR codes and social links. Pick one to open it.</p>
+          <p class="lede">Everything the team uses to make flyers, newsletter headers, QR codes and social links, and the folders and dashboards you keep looking for. Pick one to open it.</p>
         </div>
       </section>
       <section class="tools" aria-label="Tools">
         <ul class="wrap cards" id="tools"></ul>
       </section>
+      <!-- Shown by hub.js once links.json has loaded. -->
+      <section class="links" aria-labelledby="links-title" hidden>
+        <div class="wrap" id="links">
+          <h2 class="section-title" id="links-title">Quick links</h2>
+        </div>
+      </section>
       <section class="apps" aria-labelledby="apps-title">
         <div class="wrap">
-          <h2 class="apps-title" id="apps-title">More from Nests</h2>
+          <h2 class="section-title" id="apps-title">More from Nests</h2>
           <ul class="cards" id="apps"></ul>
         </div>
       </section>
     </main>
     <footer>
+      <ul class="social" id="social" aria-label="Nests Hostels on social media"></ul>
       <a href="https://nestshostels.com/">nestshostels.com <span aria-hidden="true">↗</span></a>
     </footer>
   </body>

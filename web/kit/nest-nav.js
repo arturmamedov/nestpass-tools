@@ -31,6 +31,8 @@
   }
 
   // The tools, in bar order. Adding a tool, or moving one to a new address, is this list only.
+  // `bar: false` keeps a tool to its card on the tools page: a dashboard people look at, not a
+  // tool they switch between, would only crowd the bar.
   var TOOLS = [
     {
       id: 'flyers',
@@ -63,7 +65,18 @@
       blurb: 'Short tracked links for Instagram and TikTok stories, posts and influencers.',
       icon: icon('<path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/>'),
     },
+    {
+      id: 'occupancy',
+      name: 'Occupancy',
+      href: 'https://reliable-donut-42d1fb.netlify.app/',
+      blurb: 'Occupancy across the hostels, at a glance.',
+      icon: icon('<path d="M3 20V9l9-5 9 5v11"/><path d="M3 20h18"/><path d="M8 20v-5h8v5"/><path d="M8 11h.01M12 11h.01M16 11h.01"/>'),
+      bar: false,
+    },
   ].map(Object.freeze);
+
+  // What the bar lists: every tool but the ones kept to the tools page.
+  var BAR = TOOLS.filter((tool) => tool.bar !== false);
 
   // The Nests apps beyond the staff tools: other people, other jobs, their own logins. Only the
   // tools page lists them, in their own row; the bar stays the switcher between the tools above.
@@ -226,9 +239,9 @@
     // property would make its assignment throw.
     _render() {
       var id = this.getAttribute('tool');
-      var current = TOOLS.find((tool) => tool.id === id);
-      this._links.replaceChildren(...TOOLS.map((tool) => item(link(tool, tool === current, false))));
-      this._list.replaceChildren(...TOOLS.map((tool) => item(link(tool, tool === current, true))));
+      var current = BAR.find((tool) => tool.id === id);
+      this._links.replaceChildren(...BAR.map((tool) => item(link(tool, tool === current, false))));
+      this._list.replaceChildren(...BAR.map((tool) => item(link(tool, tool === current, true))));
       this._label.textContent = current ? current.name : 'Tools';
     }
 

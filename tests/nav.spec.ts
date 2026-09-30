@@ -3,7 +3,7 @@ import { BAR_HEIGHT, HOST, KIT, defined, expect, test } from './fixtures';
 
 const HOSTS = ['blank', 'flyers-like', 'qr-like', 'newsletter-like'];
 
-type Entry = { id: string; name: string; href: string };
+type Entry = { id: string; name: string; href: string; bar?: false };
 type Registry = { hub: string; tools: Entry[]; apps: Entry[] };
 const registry = (page: Page) => page.evaluate(() => (window as unknown as { NestTools: Registry }).NestTools);
 
@@ -33,7 +33,10 @@ test.describe('the registry', () => {
   test('every tool id marks exactly its own link as the current page', async ({ page }) => {
     await page.goto(`${HOST}blank.html`);
     await defined(page);
-    const { tools } = await registry(page);
+    const all = (await registry(page)).tools;
+    expect(all.map((t) => t.id)).toEqual(['flyers', 'newsletter', 'qr', 'vanity', 'occupancy']);
+    // `bar: false` keeps a tool to its card on the tools page.
+    const tools = all.filter((t) => t.bar !== false);
     expect(tools.map((t) => t.id)).toEqual(['flyers', 'newsletter', 'qr', 'vanity']);
     for (const tool of tools) {
       await page.evaluate((id) => document.querySelector('nest-nav')!.setAttribute('tool', id), tool.id);

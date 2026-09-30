@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { BAR_HEIGHT, HUB, KIT, defined, expect, root, test } from './fixtures';
 import { FONTS, LICENSES, source, target } from '../scripts/fonts.mjs';
 
-type Entry = { id: string; name: string; href: string; preview?: string };
+type Entry = { id: string; name: string; href: string; preview?: string; bar?: false };
 type Registry = { hub: string; tools: Entry[]; apps: Entry[] };
 const registry = (page: Page) => page.evaluate(() => (window as unknown as { NestTools: Registry }).NestTools);
 
@@ -51,6 +51,65 @@ test('the apps get their own row below the tools, each card led by a preview, an
   expect(barLinks.length).toBeGreaterThan(tools.length);
   for (const app of apps) expect(barLinks).not.toContain(app.href);
   expect(errors).toEqual([]);
+});
+
+test('a tool kept out of the bar still gets its card', async ({ page }) => {
+  await page.goto(HUB);
+  await defined(page);
+  const { tools } = await registry(page);
+  const cardOnly = tools.filter((t) => t.bar === false);
+  expect(cardOnly.map((t) => t.id)).toEqual(['occupancy']);
+  const barLinks = await page.locator('nest-nav a').evaluateAll((as) => as.map((a) => (a as HTMLAnchorElement).href));
+  for (const tool of cardOnly) {
+    await expect(page.locator('#tools .card').getByRole('link', { name: tool.name, exact: true })).toHaveAttribute('href', tool.href);
+    expect(barLinks).not.toContain(tool.href);
+  }
+});
+
+type Links = { groups: { name: string; links: { name: string; href: string; note?: string }[] }[]; social: { name: string; href: string }[] };
+const links = () => JSON.parse(readFileSync(join(root, 'web', 'links.json'), 'utf8')) as Links;
+
+test('the quick links sit between the tools and the apps, one tile per link in links.json, grouped', async ({ page, errors }) => {
+  await page.goto(HUB);
+  await defined(page);
+  const { groups } = links();
+  const section = page.locator('section.links');
+  await expect(section).toBeVisible();
+  await expect(section.locator('.group-name')).toHaveText(groups.map((g) => g.name));
+  for (const [i, group] of groups.entries()) {
+    const tiles = section.locator('.tiles').nth(i).locator('.tile');
+    await expect(tiles).toHaveCount(group.links.length);
+    for (const [j, link] of group.links.entries()) {
+      await expect(tiles.nth(j)).toHaveAttribute('href', link.href);
+      await expect(tiles.nth(j).locator('.tile-name')).toHaveText(link.name);
+      await expect(tiles.nth(j).locator('svg')).toBeVisible();
+    }
+  }
+  // Where a link goes names its source: Drive and Notion by name.
+  const sources = await section.locator('.tile-source').allTextContents();
+  expect(new Set(sources)).toEqual(new Set(['Google Drive', 'Notion']));
+  const [tools, quick, apps] = [page.locator('#tools'), section, page.locator('#apps')];
+  const [t, q, a] = [(await tools.boundingBox())!, (await quick.boundingBox())!, (await apps.boundingBox())!];
+  expect(q.y).toBeGreaterThanOrEqual(t.y + t.height);
+  expect(a.y).toBeGreaterThanOrEqual(q.y + q.height);
+  expect(errors).toEqual([]);
+});
+
+test('the footer lists the social links from links.json', async ({ page }) => {
+  await page.goto(HUB);
+  const { social } = links();
+  const anchors = page.locator('footer .social a');
+  await expect(anchors).toHaveText(social.map((s) => s.name));
+  expect(await anchors.evaluateAll((as) => as.map((a) => (a as HTMLAnchorElement).href))).toEqual(social.map((s) => s.href));
+});
+
+test('without links.json the tools still draw and the quick links stay hidden', async ({ page, context }) => {
+  await context.route(`${HUB}links.json`, (route) => route.fulfill({ status: 404, body: 'not found' }));
+  await page.goto(HUB);
+  await defined(page);
+  await expect(page.locator('#tools .card').first()).toBeVisible();
+  await expect(page.locator('section.links')).toBeHidden();
+  await expect(page.locator('footer .social')).toBeHidden();
 });
 
 test('the hub is public but asks search engines to stay away', async ({ page }) => {

@@ -18,6 +18,9 @@ npm run fonts   # re-copy web/fonts/ from the pinned @fontsource packages
     tool's bar draws from the same list.
   - `APPS` (Analytics, wSuite) are for other people: only the tools page lists them, in their own
     row. The bar never reads them.
+  - A tool with `bar: false` (Occupancy) gets a card on the tools page but no link in the bar.
+- `web/links.json`: the tools page's quick links (grouped Drive/Notion links) and the footer's
+  social links. Only `hub.js` reads it; the kit never does.
 - `web/previews/`: app screenshots. The tools page is public, so they must not show real figures.
 - `web/index.html`, `hub.css`, `hub.js`: the tools page.
 - `tests/hosts/*.html`: stand-ins for the tools' pages, each with hostile CSS:

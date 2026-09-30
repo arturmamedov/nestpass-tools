@@ -1,0 +1,62 @@
+{
+  "groups": [
+    {
+      "id": "everyone",
+      "name": "For everyone",
+      "links": [
+        {
+          "name": "Marketing & IT (Rodrigo)",
+          "note": "The folder you share with the marketing and IT team.",
+          "href": "https://drive.google.com/drive/u/0/folders/1VP1HIhk1htUKhpG7cjwZCCzS6ZL0ocEq"
+        },
+        {
+          "name": "Activities by hostel",
+          "note": "Each hostel's internal activities.",
+          "href": "https://drive.google.com/drive/u/0/folders/14cFBG3wJglkWmSytLybDwGDK2GWL62U7"
+        },
+        {
+          "name": "Logos",
+          "note": "The Nests Hostels logos, ready to use.",
+          "href": "https://drive.google.com/drive/u/0/folders/15iq_Yf2K4PHNSCp-H45FZorHYmuJw1xm"
+        }
+      ]
+    },
+    {
+      "id": "marketing-it",
+      "name": "Marketing & IT",
+      "links": [
+        {
+          "name": "Marketing tasks",
+          "note": "The marketing team's task dashboard.",
+          "href": "https://violet-bread-f2a.notion.site/Marketing-Dashboard-1c02445fb179809cb78ecdf256633857?pvs=74"
+        },
+        {
+          "name": "YouTube & Reels videos",
+          "note": "Footage for YouTube and Instagram Reels.",
+          "href": "https://drive.google.com/drive/u/0/folders/1C4_rTK-oIdrfZ2rTsod_edJmO01aqDJf"
+        },
+        {
+          "name": "Website KPIs",
+          "note": "The website's statistics and KPIs.",
+          "href": "https://violet-bread-f2a.notion.site/1d52445fb1798053b7d3e9f2df39d4ed?v=1d52445fb179802f91c1000c103b5a3b&pvs=74"
+        },
+        {
+          "name": "IT web tasks",
+          "note": "The IT team's website task dashboard.",
+          "href": "https://app.notion.com/p/2c62445fb179812890eed219bd1a706e?v=2c62445fb17981358c19000ccc7bc9e8"
+        },
+        {
+          "name": "Photo archive",
+          "note": "Older photos that are still good to use.",
+          "href": "https://drive.google.com/drive/u/0/folders/1sIuAN9S7k2WkC5vh1Ud3poDRnhdGM0Xu"
+        }
+      ]
+    }
+  ],
+  "social": [
+    { "name": "Instagram", "href": "https://www.instagram.com/nestshostels/" },
+    { "name": "TikTok", "href": "https://www.tiktok.com/@nestshostels" },
+    { "name": "YouTube", "href": "https://www.youtube.com/@nestshostels/" },
+    { "name": "Facebook", "href": "https://www.facebook.com/nestshostels/" }
+  ]
+}

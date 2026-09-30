@@ -13,6 +13,7 @@ The Nests Hostels tools page at **https://nestpass.ai/**, and the top bar every 
 
 ```
 web/index.html, hub.css, hub.js   the tools page (public, noindex)
+web/links.json                    the tools page's quick links and social links
 web/kit/nest-nav.js               the registry + the bar
 web/kit/nest-logo-white.png       the website's logo-full-white.png
 web/kit/.htaccess                 Cache-Control for kit/ only
@@ -79,7 +80,9 @@ tests/                            Playwright: the bar on hostile host pages, and
 
 1. Add an entry to `TOOLS` in `web/kit/nest-nav.js`:
    - `id`, `name`, an absolute `https://` `href`, a one-line `blurb`, and a 24×24 stroke `icon`;
-   - in bar order.
+   - in bar order;
+   - `bar: false` for a tool that only gets a card on the tools page and stays out of the bar
+     (e.g. Occupancy, a dashboard people look at rather than a tool they switch between).
 2. Run `npm test`. `tests/nav.spec.ts` lists the expected ids, so update it there too.
 3. Upload `web/kit/nest-nav.js`. Within about five minutes every tool's bar and the tools page show
    the new tool.
@@ -101,6 +104,23 @@ It gets a night card in the tools page's "More from Nests" row and stays out of 
    - **The tools page is public.** A screenshot must show demo figures, or have them blurred.
 3. Run `npm test`. `tests/hub.spec.ts` lists the expected app ids.
 4. Upload `web/kit/nest-nav.js`, plus the preview if there is one.
+
+## Adding a quick link
+
+The "Quick links" section (the team's Drive folders and Notion dashboards) and the footer's social
+links come from `web/links.json`. Only the tools page reads it, so it stays out of the kit.
+
+1. Add `{ "name", "href", "note" }` to a group's `links`, or add a group (`id`, `name`, `links`).
+   - `note` is optional: one line saying what's inside.
+   - The icon and the "GOOGLE DRIVE" / "NOTION" label follow from the address. To pick another
+     icon, set `"type"`: `drive`, `notion`, `docs`, `design` or `link` (the icons are in `hub.js`).
+2. Upload `web/links.json`. No test changes: `tests/hub.spec.ts` reads the same file.
+
+- **The tools page is public**, so anyone with its address sees these links. The Drive folders and
+  `app.notion.com` pages still need a login; `*.notion.site` pages are published to the web and do
+  not.
+- If `links.json` fails to load, the section and the social links stay hidden and the tools still
+  show.
 
 ## Develop
 
