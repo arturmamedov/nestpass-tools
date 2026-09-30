@@ -12,10 +12,13 @@ npm run fonts   # re-copy web/fonts/ from the pinned @fontsource packages
 
 ## Where things live
 
-- `web/kit/nest-nav.js`: the `TOOLS` registry plus the `<nest-nav>` custom element.
+- `web/kit/nest-nav.js`: the `TOOLS` and `APPS` registries plus the `<nest-nav>` custom element.
   - It is one classic script with no build.
   - **It is the only list of tools.** `hub.js` draws the cards from `window.NestTools`, and every
     tool's bar draws from the same list.
+  - `APPS` (Analytics, wSuite) are for other people: only the tools page lists them, in their own
+    row. The bar never reads them.
+- `web/previews/`: app screenshots. The tools page is public, so they must not show real figures.
 - `web/index.html`, `hub.css`, `hub.js`: the tools page.
 - `tests/hosts/*.html`: stand-ins for the tools' pages, each with hostile CSS:
   - Flyers' generic class names and variables;

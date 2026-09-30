@@ -3,7 +3,8 @@ import { BAR_HEIGHT, HOST, KIT, defined, expect, test } from './fixtures';
 
 const HOSTS = ['blank', 'flyers-like', 'qr-like', 'newsletter-like'];
 
-type Registry = { hub: string; tools: { id: string; name: string; href: string }[] };
+type Entry = { id: string; name: string; href: string };
+type Registry = { hub: string; tools: Entry[]; apps: Entry[] };
 const registry = (page: Page) => page.evaluate(() => (window as unknown as { NestTools: Registry }).NestTools);
 
 /** What a person sees of the bar: the shadow parts every host must render identically. */
@@ -61,9 +62,9 @@ test.describe('the registry', () => {
   test('links point at https addresses, and the logo and "All tools" at the hub the kit came from', async ({ page }) => {
     await page.goto(`${HOST}blank.html`);
     await defined(page);
-    const { hub, tools } = await registry(page);
+    const { hub, tools, apps } = await registry(page);
     expect(hub).toBe('https://nestpass.ai/');
-    for (const tool of tools) expect(tool.href).toMatch(/^https:\/\//);
+    for (const entry of [...tools, ...apps]) expect(entry.href).toMatch(/^https:\/\//);
     await expect(page.locator('nest-nav .logo')).toHaveAttribute('href', hub);
     await expect(page.locator('nest-nav .all')).toHaveAttribute('href', hub);
     await expect(page.locator('nest-nav .logo img')).toHaveJSProperty('naturalWidth', 300);

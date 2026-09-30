@@ -89,13 +89,17 @@ nest-nav:not(:defined) {
   color: #fff;
 }
 
-.eyebrow {
-  margin: 0 0 14px;
-  color: rgba(255, 255, 255, 0.8);
+.eyebrow,
+.apps-title {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 h1 {
@@ -229,6 +233,64 @@ h1 {
   background: var(--teal-hover);
 }
 
+/* The Nests apps beyond the staff tools: their own row, and night cards led by a preview. */
+.apps {
+  padding: 0 20px 64px;
+}
+
+.apps-title {
+  margin: 0 0 16px;
+  color: var(--teal);
+}
+
+/* auto-fit: two apps share the row rather than leaving an empty third column. */
+.apps .cards {
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  margin: 0;
+}
+
+.card-feature {
+  overflow: hidden; /* the preview's corners follow the card's */
+  border-color: var(--night);
+  background: var(--night);
+}
+
+.card-feature:hover {
+  border-color: var(--teal-bright);
+}
+
+.card-feature .card-name a {
+  color: #fff;
+}
+
+.card-feature .card-blurb,
+.card-feature .card-place {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Out to the card's edges, over its padding. */
+.card-preview {
+  display: grid;
+  place-items: center;
+  height: 180px;
+  margin: -22px -22px 8px;
+  background: linear-gradient(to top left, var(--teal-bright), var(--teal), var(--night));
+  color: #fff;
+}
+
+.card-preview svg {
+  width: 56px;
+  height: 56px;
+}
+
+.card-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
 footer {
   padding: 8px 20px 36px;
   text-align: center;
@@ -249,8 +311,12 @@ footer a:hover {
   .hero {
     padding: 48px 16px 88px;
   }
-  .tools {
+  .tools,
+  .apps {
     padding: 0 16px 48px;
+  }
+  .card-preview {
+    height: 150px;
   }
 }
 

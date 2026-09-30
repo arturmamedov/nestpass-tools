@@ -65,7 +65,27 @@
     },
   ].map(Object.freeze);
 
-  window.NestTools = Object.freeze({ hub: HUB, tools: Object.freeze(TOOLS) });
+  // The Nests apps beyond the staff tools: other people, other jobs, their own logins. Only the
+  // tools page lists them, in their own row; the bar stays the switcher between the tools above.
+  // `preview` is a screenshot on the hub, relative to it. Without one the page draws the icon.
+  var APPS = [
+    {
+      id: 'analytics',
+      name: 'Nests Analytics',
+      href: 'https://analytics.nestshostels.com/',
+      blurb: 'Hostel performance dashboard.',
+      icon: icon('<path d="M4 4v16h16"/><path d="M8.5 16v-4M12.5 16V8M16.5 16v-6"/>'),
+    },
+    {
+      id: 'wsuite',
+      name: 'wSuite Chatbot',
+      href: 'https://nest-mind.laravel.cloud/',
+      blurb: 'The wSuite chatbot.',
+      icon: icon('<path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.1A8 8 0 1 1 20 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/>'),
+    },
+  ].map(Object.freeze);
+
+  window.NestTools = Object.freeze({ hub: HUB, tools: Object.freeze(TOOLS), apps: Object.freeze(APPS) });
 
   // Measured from the Flyers top bar this design comes from: 10 px + a 34 px pill button + 10 px.
   // Every tool styles its `nest-nav:not(:defined)` fallback at this same height, so the upgrade

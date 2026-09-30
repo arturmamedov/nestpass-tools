@@ -5,6 +5,8 @@ The Nests Hostels tools page at **https://nestpass.ai/**, and the top bar every 
 - `web/` is exactly what is uploaded to the `nestpass.ai` domain root.
 - `web/kit/nest-nav.js` is the single source of truth. It holds:
   - **the list of tools** (`TOOLS`), which the bar and the tools page both draw from;
+  - **the list of apps** (`APPS`): the Nests apps beyond the staff tools, which only the tools page
+    lists, in their own "More from Nests" row;
   - **the `<nest-nav>` element**: the bar, taken from the Flyers editor's top bar.
 - Every tool loads that one file from here. Adding a tool, or moving one to a new address, is one
   edit in `TOOLS` and one upload. No tool has to be redeployed.
@@ -15,6 +17,7 @@ web/kit/nest-nav.js               the registry + the bar
 web/kit/nest-logo-white.png       the website's logo-full-white.png
 web/kit/.htaccess                 Cache-Control for kit/ only
 web/fonts/                        Montserrat 500/600/700 + Archivo Black, copied by `npm run fonts`
+web/previews/                     screenshots for the apps' cards (public: no real figures)
 tests/                            Playwright: the bar on hostile host pages, and the tools page
 ```
 
@@ -84,6 +87,21 @@ tests/                            Playwright: the bar on hostile host pages, and
 
 When QR moves to `qr.nestpass.ai`, change its `href` and upload. That is the whole change.
 
+## Adding an app
+
+An app is a Nests product for other people or another job (Nests Analytics, the wSuite chatbot).
+It gets a night card in the tools page's "More from Nests" row and stays out of the bar.
+
+1. Add an entry to `APPS` in `web/kit/nest-nav.js`: the same fields as a tool.
+2. Optionally, give it a preview:
+   - Put a screenshot in `web/previews/`, e.g. `analytics.webp`, about 1200 px wide.
+   - Set `preview: 'previews/analytics.webp'` on the entry.
+   - The card shows the image's top-left corner, 180 px high.
+   - Without a preview the card shows the app's icon on the teal gradient.
+   - **The tools page is public.** A screenshot must show demo figures, or have them blurred.
+3. Run `npm test`. `tests/hub.spec.ts` lists the expected app ids.
+4. Upload `web/kit/nest-nav.js`, plus the preview if there is one.
+
 ## Develop
 
 ```sh
@@ -113,7 +131,7 @@ npm run fonts     # after bumping an @fontsource version: re-copy web/fonts/
 
 **Upload:**
 1. Copy the **contents** of `web/` into the domain root: `index.html`, `hub.css`, `hub.js`,
-   `robots.txt`, `kit/`, `fonts/`.
+   `robots.txt`, `kit/`, `fonts/`, and `previews/` once it exists.
    - `robots.txt` asks every crawler, search and AI alike, to stay off the whole of nestpass.ai.
      That includes `/activities/`, `/newsletter/` and `/vanity/`: crawlers read robots.txt only at
      a domain's root.

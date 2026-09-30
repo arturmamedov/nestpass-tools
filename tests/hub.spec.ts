@@ -1,12 +1,17 @@
+import type { Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BAR_HEIGHT, HUB, KIT, defined, expect, root, test } from './fixtures';
 import { FONTS, LICENSES, source, target } from '../scripts/fonts.mjs';
 
+type Entry = { id: string; name: string; href: string; preview?: string };
+type Registry = { hub: string; tools: Entry[]; apps: Entry[] };
+const registry = (page: Page) => page.evaluate(() => (window as unknown as { NestTools: Registry }).NestTools);
+
 test('the hub draws one card per registered tool, from the registry', async ({ page, errors }) => {
   await page.goto(HUB);
   await defined(page);
-  const tools = await page.evaluate(() => (window as unknown as { NestTools: { tools: { name: string; href: string }[] } }).NestTools.tools);
+  const { tools } = await registry(page);
   const cards = page.locator('#tools .card');
   await expect(cards).toHaveCount(tools.length);
   for (const [i, tool] of tools.entries()) {
@@ -16,6 +21,35 @@ test('the hub draws one card per registered tool, from the registry', async ({ p
   await expect(cards.first().locator('.card-place')).toHaveText('nestpass.ai/activities');
   // The hub is not a tool: nothing is marked current.
   await expect(page.locator('nest-nav [aria-current]')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test('the apps get their own row below the tools, each card led by a preview, and stay out of the bar', async ({ page, errors }) => {
+  await page.goto(HUB);
+  await defined(page);
+  const { tools, apps } = await registry(page);
+  expect(apps.map((a) => a.id)).toEqual(['analytics', 'wsuite']);
+  const cards = page.locator('#apps .card');
+  await expect(cards).toHaveCount(apps.length);
+  for (const [i, app] of apps.entries()) {
+    const card = cards.nth(i);
+    await expect(card.getByRole('link')).toHaveCount(1);
+    await expect(card.getByRole('link', { name: app.name, exact: true })).toHaveAttribute('href', app.href);
+    // The app's screenshot, served from the hub; until it has one, a placeholder of the same size.
+    const preview = card.locator('.card-preview');
+    await expect(preview).toBeVisible();
+    if (app.preview) {
+      const img = preview.locator('img');
+      await expect(img).toHaveAttribute('src', new URL(app.preview, HUB).href);
+      await expect.poll(() => img.evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth), app.id).toBeGreaterThan(0);
+    } else await expect(preview.locator('svg')).toBeVisible();
+  }
+  const [toolsBox, appsBox] = [(await page.locator('#tools').boundingBox())!, (await page.locator('#apps').boundingBox())!];
+  expect(appsBox.y).toBeGreaterThan(toolsBox.y + toolsBox.height);
+  // The bar is the switcher between the staff tools only.
+  const barLinks = await page.locator('nest-nav a').evaluateAll((as) => as.map((a) => (a as HTMLAnchorElement).href));
+  expect(barLinks.length).toBeGreaterThan(tools.length);
+  for (const app of apps) expect(barLinks).not.toContain(app.href);
   expect(errors).toEqual([]);
 });
 
