@@ -58,7 +58,7 @@ test('a tool kept out of the bar still gets its card', async ({ page }) => {
   await defined(page);
   const { tools } = await registry(page);
   const cardOnly = tools.filter((t) => t.bar === false);
-  expect(cardOnly.map((t) => t.id)).toEqual(['occupancy']);
+  expect(cardOnly.map((t) => t.id)).toEqual(['maps', 'occupancy']);
   const barLinks = await page.locator('nest-nav a').evaluateAll((as) => as.map((a) => (a as HTMLAnchorElement).href));
   for (const tool of cardOnly) {
     await expect(page.locator('#tools .card').getByRole('link', { name: tool.name, exact: true })).toHaveAttribute('href', tool.href);

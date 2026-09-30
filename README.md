@@ -41,7 +41,7 @@ tests/                            Playwright: the bar on hostile host pages, and
    - Use **`async`**, in `<head>`. A slow or unreachable nestpass.ai must never delay the tool.
      (`defer` would hold back DOMContentLoaded.)
 
-2. **Set `tool` to a registry id:** `flyers`, `newsletter`, `qr`, or `vanity`.
+2. **Set `tool` to a registry id:** `flyers`, `qr`, `vanity`, or `newsletter`.
    - That tool's link becomes the teal pill, with `aria-current="page"`.
    - Leave `tool` off, or give an unknown id, and nothing is highlighted. That is how the tools page
      uses it.
@@ -82,7 +82,7 @@ tests/                            Playwright: the bar on hostile host pages, and
    - `id`, `name`, an absolute `https://` `href`, a one-line `blurb`, and a 24×24 stroke `icon`;
    - in bar order;
    - `bar: false` for a tool that only gets a card on the tools page and stays out of the bar
-     (e.g. Occupancy, a dashboard people look at rather than a tool they switch between).
+     (Maps and Occupancy: they don't load the bar, and a fifth link wouldn't fit it at 900 px).
 2. Run `npm test`. `tests/nav.spec.ts` lists the expected ids, so update it there too.
 3. Upload `web/kit/nest-nav.js`. Within about five minutes every tool's bar and the tools page show
    the new tool.

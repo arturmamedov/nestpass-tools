@@ -42,11 +42,12 @@
       icon: icon('<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M6 16l3.5-3.5 3 3 2-2L18 17"/><circle cx="14.5" cy="8" r="1.5"/>'),
     },
     {
-      id: 'newsletter',
-      name: 'Newsletter',
-      href: 'https://nestpass.ai/newsletter/',
-      blurb: 'Branded header images for the newsletter.',
-      icon: icon('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/>'),
+      id: 'maps',
+      name: 'Maps',
+      href: 'https://nestpass.ai/nestmaps/',
+      blurb: 'Island maps of the hostels and their surroundings.',
+      icon: icon('<path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6z"/><path d="M9 4v14M15 6v14"/>'),
+      bar: false,
     },
     {
       id: 'qr',
@@ -72,6 +73,13 @@
       blurb: 'Occupancy across the hostels, at a glance.',
       icon: icon('<path d="M3 20V9l9-5 9 5v11"/><path d="M3 20h18"/><path d="M8 20v-5h8v5"/><path d="M8 11h.01M12 11h.01M16 11h.01"/>'),
       bar: false,
+    },
+    {
+      id: 'newsletter',
+      name: 'Newsletter',
+      href: 'https://nestpass.ai/newsletter/',
+      blurb: 'Branded header images for the newsletter.',
+      icon: icon('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/>'),
     },
   ].map(Object.freeze);
 

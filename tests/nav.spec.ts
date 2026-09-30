@@ -34,10 +34,10 @@ test.describe('the registry', () => {
     await page.goto(`${HOST}blank.html`);
     await defined(page);
     const all = (await registry(page)).tools;
-    expect(all.map((t) => t.id)).toEqual(['flyers', 'newsletter', 'qr', 'vanity', 'occupancy']);
+    expect(all.map((t) => t.id)).toEqual(['flyers', 'maps', 'qr', 'vanity', 'occupancy', 'newsletter']);
     // `bar: false` keeps a tool to its card on the tools page.
     const tools = all.filter((t) => t.bar !== false);
-    expect(tools.map((t) => t.id)).toEqual(['flyers', 'newsletter', 'qr', 'vanity']);
+    expect(tools.map((t) => t.id)).toEqual(['flyers', 'qr', 'vanity', 'newsletter']);
     for (const tool of tools) {
       await page.evaluate((id) => document.querySelector('nest-nav')!.setAttribute('tool', id), tool.id);
       const links = page.locator('nest-nav .links a');
@@ -210,7 +210,7 @@ test.describe('on a phone', () => {
     await menu.click();
     await expect(menu).toHaveAttribute('aria-expanded', 'true');
     await expect(panel).toBeVisible();
-    await expect(panel.locator('.tool .name')).toHaveText(['Flyers', 'Newsletter', 'QR codes', 'Social vanity URLs']);
+    await expect(panel.locator('.tool .name')).toHaveText(['Flyers', 'QR codes', 'Social vanity URLs', 'Newsletter']);
     await expect(panel.locator(".tool[aria-current='page'] .name")).toHaveText('Flyers');
     await expect(panel.getByRole('link', { name: /All tools/ })).toBeVisible();
 
