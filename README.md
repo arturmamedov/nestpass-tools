@@ -119,6 +119,7 @@ links come from `web/links.json`. Only the tools page reads it, so it stays out 
 - **The tools page is public**, so anyone with its address sees these links. The Drive folders and
   `app.notion.com` pages still need a login; `*.notion.site` pages are published to the web and do
   not.
+- Quick links and socials open in a new tab; the tool cards keep the tab.
 - If `links.json` fails to load, the section and the social links stay hidden and the tools still
   show.
 

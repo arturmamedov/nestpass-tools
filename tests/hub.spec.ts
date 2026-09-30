@@ -81,13 +81,15 @@ test('the quick links sit between the tools and the apps, one tile per link in l
     await expect(tiles).toHaveCount(group.links.length);
     for (const [j, link] of group.links.entries()) {
       await expect(tiles.nth(j)).toHaveAttribute('href', link.href);
+      await expect(tiles.nth(j)).toHaveAttribute('target', '_blank');
+      await expect(tiles.nth(j)).toHaveAttribute('rel', 'noopener');
       await expect(tiles.nth(j).locator('.tile-name')).toHaveText(link.name);
       await expect(tiles.nth(j).locator('svg')).toBeVisible();
     }
   }
   // Where a link goes names its source: Drive and Notion by name.
   const sources = await section.locator('.tile-source').allTextContents();
-  expect(new Set(sources)).toEqual(new Set(['Google Drive', 'Notion']));
+  expect(new Set(sources.map((s) => s.replace(/\s*↗$/, '')))).toEqual(new Set(['Google Drive', 'Notion']));
   const [tools, quick, apps] = [page.locator('#tools'), section, page.locator('#apps')];
   const [t, q, a] = [(await tools.boundingBox())!, (await quick.boundingBox())!, (await apps.boundingBox())!];
   expect(q.y).toBeGreaterThanOrEqual(t.y + t.height);
@@ -101,6 +103,7 @@ test('the footer lists the social links from links.json', async ({ page }) => {
   const anchors = page.locator('footer .social a');
   await expect(anchors).toHaveText(social.map((s) => s.name));
   expect(await anchors.evaluateAll((as) => as.map((a) => (a as HTMLAnchorElement).href))).toEqual(social.map((s) => s.href));
+  for (const a of await anchors.all()) await expect(a).toHaveAttribute('target', '_blank');
 });
 
 test('without links.json the tools still draw and the quick links stay hidden', async ({ page, context }) => {

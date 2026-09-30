@@ -87,14 +87,27 @@
     { hosts: /(^|\.)notion\.(site|so|com)$/, label: 'Notion', type: 'notion' },
   ];
 
+  // Quick links and socials open in a new tab: people look something up and come back here.
+  // The tools keep the tab, as the bar does.
+  function external(href, className, text) {
+    var a = el('a', className, text);
+    a.href = href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    return a;
+  }
+
   function tile(link) {
     var host = new URL(link.href).hostname;
     var source = SOURCES.find((s) => s.hosts.test(host)) || { label: host.replace(/^www\./, ''), type: 'link' };
-    var a = el('a', 'tile');
-    a.href = link.href;
+    var a = external(link.href, 'tile');
     var mark = el('span', 'tile-icon');
     mark.innerHTML = ICONS[link.type] || ICONS[source.type]; // constants above, never page input
-    a.append(mark, el('span', 'tile-name', link.name), el('span', 'tile-source', source.label));
+    var label = el('span', 'tile-source', source.label + ' ');
+    var arrow = el('span', '', '↗');
+    arrow.setAttribute('aria-hidden', 'true');
+    label.append(arrow);
+    a.append(mark, el('span', 'tile-name', link.name), label);
     if (link.note) a.append(el('span', 'tile-note', link.note));
     var item = el('li');
     item.append(a);
@@ -112,8 +125,7 @@
       box.closest('section').hidden = false;
     }
     draw('social', config.social || [], (social) => {
-      var a = el('a', '', social.name);
-      a.href = social.href;
+      var a = external(social.href, '', social.name);
       var item = el('li');
       item.append(a);
       return item;
